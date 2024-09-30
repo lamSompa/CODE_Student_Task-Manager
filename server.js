@@ -1,24 +1,44 @@
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts')
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
+app.use(express.static(path.join(__dirname)));
 
-// Static route for home
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.use(expressLayouts)
+
+// Static route for Dashboard
+app.get('/Dashboard', (req, res) => {
+  res.render('Dashboard');
+});
+
+// Static route for My Lists
+app.get('/my-lists', (req, res) => {
+  res.render('my-lists');
+});
+
+// Static route for New List
+app.get('/new-list', (req, res) => {
+  res.render('new-list');
+});
+
+// Static route for Completed Tasks
+app.get('/completed-tasks', (req, res) => {
+  res.render('completed-tasks');
 });
 
 // Static route for settings
 app.get('/settings', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'settings.html'));
+  res.render('settings');
 });
 
-// Static route for login
+// Static route for Login
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.render('login');
 });
 
 // Dynamic route example for tasks

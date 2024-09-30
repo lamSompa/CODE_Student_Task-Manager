@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdown = document.getElementById('dropdown');
     const modeToggle = document.getElementById('mode-toggle');
     const body = document.body;
+    const taskBoxes = document.querySelectorAll('.task-box');
 
     // Check local storage for mode preference
     if (localStorage.getItem('dark-mode') === 'true') {
@@ -25,4 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('dark-mode', 'false');
         }
     });
+
+    // Intersection Observer for task boxes
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    taskBoxes.forEach(box => observer.observe(box));
 });
