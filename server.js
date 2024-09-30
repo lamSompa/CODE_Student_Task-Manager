@@ -11,9 +11,18 @@ app.use(express.static(path.join(__dirname)));
 
 app.use(expressLayouts)
 
+// Static route for index
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.get('/dashboard', (req, res) => {
+  res.render('index');
+});
+
 // Static route for Dashboard
-app.get('/Dashboard', (req, res) => {
-  res.render('Dashboard');
+app.get('/dashboard', (req, res) => {
+  res.render('dashboard');
 });
 
 // Static route for My Lists
