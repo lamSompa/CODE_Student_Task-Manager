@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title><%= task.title %></title>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <section>
+            <h2>Task Details</h2>
+            <div class="task-box">
+                <h3><%= task.title %></h3>
+                <p><%= task.description %></p>
+                <span class="badge <%= task.badge %>"><%= task.badge.charAt(0).toUpperCase() + task.badge.slice(1) %></span>
+                <div class="list-actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="delete-button">Delete</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <%- include('partials/footer') %>
+</body>
+</html>
