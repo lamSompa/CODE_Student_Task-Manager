@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let rawdata = fs.readFileSync("data.json");
+let rawdata = fs.readFileSync("views/data.json");
 let data = JSON.parse(rawdata);
 console.log(data)
 
