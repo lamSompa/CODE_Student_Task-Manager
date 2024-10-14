@@ -1,3 +1,9 @@
+const fs = require('fs');
+
+let rawdata = fs.readFileSync("data.json");
+let data = JSON.parse(rawdata);
+console.log(data)
+
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
