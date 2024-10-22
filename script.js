@@ -8,24 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check local storage for mode preference
     if (localStorage.getItem('dark-mode') === 'true') {
         body.classList.add('dark-mode');
-        modeToggle.checked = true;
+        if (modeToggle) modeToggle.checked = true;
     }
 
     // Toggle dropdown menu
-    menuIcon.addEventListener('click', () => {
-        dropdown.classList.toggle('active');
-    });
+    if (menuIcon) {
+        menuIcon.addEventListener('click', () => {
+            if (dropdown) dropdown.classList.toggle('active');
+        });
+    }
 
     // Toggle dark mode
-    modeToggle.addEventListener('click', () => {
-        if (modeToggle.checked) {
-            body.classList.add('dark-mode');
-            localStorage.setItem('dark-mode', 'true');
-        } else {
-            body.classList.remove('dark-mode');
-            localStorage.setItem('dark-mode', 'false');
-        }
-    });
+    if (modeToggle) {
+        modeToggle.addEventListener('click', () => {
+            if (modeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('dark-mode', 'true');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('dark-mode', 'false');
+            }
+        });
+    }
 
     // Intersection Observer for task boxes
     const observer = new IntersectionObserver((entries) => {
@@ -37,4 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
 
     taskBoxes.forEach(box => observer.observe(box));
+
+    // Login Form Handling
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            // Add login logic here
+            console.log('Login submitted');
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            // Add registration logic here
+            console.log('Registration submitted');
+        });
+    }
 });

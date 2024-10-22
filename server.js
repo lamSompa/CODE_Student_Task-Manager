@@ -3,6 +3,7 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs'); // Updated to bcryptjs
 const { MongoClient, ObjectId } = require('mongodb');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,8 +13,9 @@ const uri = "mongodb+srv://abeikusompanyarkolartey:Iam.$ompa.0110.@codestudentta
 const client = new MongoClient(uri);
 
 let tasksCollection;
+let usersCollection;
 
-// Connect to MongoDB and set up the tasks collection
+// Connect to MongoDB and set up the collections
 async function connectToDatabase() {
     try {
         await client.connect();
@@ -21,6 +23,7 @@ async function connectToDatabase() {
 
         const database = client.db('CODEStudentTaskManager');
         tasksCollection = database.collection('Tasks');
+        usersCollection = database.collection('Users'); // New collection for users
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
     }
@@ -36,6 +39,36 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname)));
 app.use(expressLayouts);
+
+// User registration
+app.post('/register', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = { username, password: hashedPassword };
+        await usersCollection.insertOne(newUser);
+        res.redirect('/login');
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).send('Error registering user');
+    }
+});
+
+// User login
+app.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await usersCollection.findOne({ username });
+        if (user && await bcrypt.compare(password, user.password)) {
+            res.redirect('/dashboard');
+        } else {
+            res.status(401).send('Invalid credentials');
+        }
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).send('Error logging in');
+    }
+});
 
 // Create a new task
 app.post('/tasks', async (req, res) => {
