@@ -1,14 +1,35 @@
 const fs = require('fs');
-
-let rawdata = fs.readFileSync("views/data.json");
-let data = JSON.parse(rawdata);
-console.log(data)
-
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
+const bodyParser = require('body-parser');
+const { MongoClient, ObjectId } = require('mongodb');
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// MongoDB connection
+const uri = "mongodb+srv://abeikusompanyarkolartey:Iam.$ompa.0110.@codestudenttaskmanagerc.9zdpi.mongodb.net/?retryWrites=true&w=majority&appName=CODEStudentTaskManagerCluster";
+const client = new MongoClient(uri);
+
+let tasksCollection;
+
+// Connect to MongoDB and set up the tasks collection
+async function connectToDatabase() {
+    try {
+        await client.connect();
+        console.log("Connected to MongoDB Atlas!");
+
+        const database = client.db('CODEStudentTaskManager');
+        tasksCollection = database.collection('Tasks');
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+    }
+}
+
+connectToDatabase().catch(console.error);
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set view engine
 app.set('view engine', 'ejs');
@@ -16,31 +37,61 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname)));
 app.use(expressLayouts);
 
-// Task data
-const tasks = {
-    1: { title: 'SE_19 Project', description: 'Prepare and submit the SE_19 project by Sep 17th.', badge: 'urgent' },
-    2: { title: 'Task 2 Completion', description: 'Task 2 marked as completed 2 hours ago.', badge: 'completed' },
-    3: { title: 'Profile Update', description: 'Profile updated 1 day ago.', badge: 'normal' },
-    4: { title: 'New Task Addition', description: 'New task added: Task 4, 5 hours ago.', badge: 'normal' },
-    5: { title: 'Task 3 Completion', description: 'Update git repo to include CSS styles', badge: 'completed' },
-    6: { title: 'Settings Update', description: 'Settings updated 4 days ago.', badge: 'normal' },
-    7: { title: 'Task 5 Addition', description: 'New task added: Task 5, 3 days ago.', badge: 'normal' },
-    8: { title: 'Urgent Task Review', description: 'Review urgent tasks for upcoming deadlines.', badge: 'urgent' },
-    9: { title: 'Feedback Collection', description: 'Collect feedback from team members.', badge: 'normal' },
-    10: { title: 'GitHub Sync', description: 'Ensure all necessary commits are synced.', badge: 'normal' },
-    11: { title: 'Storage Management', description: 'Free up storage on SSD after hand-in.', badge: 'normal' },
-    12: { title: 'Responsiveness Check', description: 'Ensure all pages are responsive.', badge: 'normal' },
-    13: { title: 'HTML Pages Review', description: 'Confirm HTML pages are linked correctly.', badge: 'normal' },
-    14: { title: 'Team Meeting Plan', description: 'Plan for the upcoming team meeting.', badge: 'normal' }
-};
+// Create a new task
+app.post('/tasks', async (req, res) => {
+    try {
+        const newTask = {
+            title: req.body.title,
+            description: req.body.description,
+            badge: req.body.badge
+        };
+        await tasksCollection.insertOne(newTask);
+        res.redirect('/my-lists');
+    } catch (error) {
+        console.error('Error creating task:', error);
+        res.status(500).send('Error creating task');
+    }
+});
 
-// Dynamic route for tasks
-app.get('/tasks/:id', (req, res) => {
-    const task = tasks[req.params.id];
-    if (task) {
-        res.render('task', { task });
-    } else {
-        res.status(404).send('Task not found');
+// Read all tasks
+app.get('/my-lists', async (req, res) => {
+    try {
+        const tasks = await tasksCollection.find({}).toArray();
+        res.render('my-lists', { tasks });
+    } catch (error) {
+        console.error('Error retrieving tasks:', error);
+        res.status(500).send('Error retrieving tasks');
+    }
+});
+
+// Update a task
+app.post('/tasks/:id/edit', async (req, res) => {
+    try {
+        console.log(`Editing task with ID: ${req.params.id}`);
+        const updatedTask = {
+            title: req.body.title,
+            description: req.body.description,
+            badge: req.body.badge
+        };
+        const result = await tasksCollection.updateOne({ _id: new ObjectId(req.params.id) }, { $set: updatedTask });
+        console.log('Update result:', result);
+        res.redirect('/my-lists');
+    } catch (error) {
+        console.error('Error updating task:', error);
+        res.status(500).send('Error updating task');
+    }
+});
+
+// Delete a task
+app.post('/tasks/:id/delete', async (req, res) => {
+    try {
+        console.log(`Deleting task with ID: ${req.params.id}`);
+        const result = await tasksCollection.deleteOne({ _id: new ObjectId(req.params.id) });
+        console.log('Delete result:', result);
+        res.redirect('/my-lists');
+    } catch (error) {
+        console.error('Error deleting task:', error);
+        res.status(500).send('Error deleting task');
     }
 });
 
@@ -50,11 +101,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
-});
-
-app.get('/my-lists', (req, res) => {
-    res.render('my-lists');
+    res.render('index'); // Render 'index' for dashboard
 });
 
 app.get('/new-list', (req, res) => {
