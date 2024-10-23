@@ -1,5 +1,3 @@
-Here's an updated README to reflect how you've met the requirements for Hand-in 2:
-
 CODE Student Task Manager
 
 Overview
