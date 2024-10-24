@@ -39,17 +39,17 @@ Clone the Repository:
    
 
 Install Dependencies:
+Run npm install to install necessary dependencies from package.json
 
    
 
 Set Up MongoDB:
 
-   Update the MongoDB URI in server.js with your credentials.
+   Update the MongoDB URL in server.js with your credentials.
 
 Start the Server:
-
+Run "node server.js"
    
-
 Access the App:
 
    Open your browser and navigate to http://localhost:3000.
