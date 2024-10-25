@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs'); // Updated to bcryptjs
 const { MongoClient, ObjectId } = require('mongodb');
+const { Console } = require('console');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -97,6 +98,16 @@ app.get('/my-lists', async (req, res) => {
     }
 });
 
+app.get('/tasks/:id', async (req, res) => {
+    try {
+        console.log(`Task with ID: ${req.params.id}`);
+        task = await tasksCollection.findOne({ _id: new ObjectId(req.params.id) })
+        res.send(task)
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 // Update a task
 app.post('/tasks/:id/edit', async (req, res) => {
     try {
@@ -106,6 +117,7 @@ app.post('/tasks/:id/edit', async (req, res) => {
             description: req.body.description,
             badge: req.body.badge
         };
+        console.log("HELLLLLLLLLLOOOOOOOOOOOOO", updatedTask);
         const result = await tasksCollection.updateOne({ _id: new ObjectId(req.params.id) }, { $set: updatedTask });
         console.log('Update result:', result);
         res.redirect('/my-lists');
