@@ -1,16 +1,16 @@
-const fs = require('fs');
+require('dotenv').config();
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs'); // Updated to bcryptjs
+const bcrypt = require('bcryptjs');
 const { MongoClient, ObjectId } = require('mongodb');
-const { Console } = require('console');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
-const uri = "mongodb+srv://abeikusompanyarkolartey:Iam.$ompa.0110.@codestudenttaskmanagerc.9zdpi.mongodb.net/?retryWrites=true&w=majority&appName=CODEStudentTaskManagerCluster";
+const uri = process.env.MONGODB_URI;
+console.log('MongoDB URI:', uri); // Added console log to verify the URI
 const client = new MongoClient(uri);
 
 let tasksCollection;
@@ -24,7 +24,7 @@ async function connectToDatabase() {
 
         const database = client.db('CODEStudentTaskManager');
         tasksCollection = database.collection('Tasks');
-        usersCollection = database.collection('Users'); // New collection for users
+        usersCollection = database.collection('Users');
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
     }
@@ -100,9 +100,8 @@ app.get('/my-lists', async (req, res) => {
 
 app.get('/tasks/:id', async (req, res) => {
     try {
-        console.log(`Task with ID: ${req.params.id}`);
-        task = await tasksCollection.findOne({ _id: new ObjectId(req.params.id) })
-        res.send(task)
+        const task = await tasksCollection.findOne({ _id: new ObjectId(req.params.id) });
+        res.send(task);
     } catch (error) {
         console.log(error);
     }
@@ -111,15 +110,12 @@ app.get('/tasks/:id', async (req, res) => {
 // Update a task
 app.post('/tasks/:id/edit', async (req, res) => {
     try {
-        console.log(`Editing task with ID: ${req.params.id}`);
         const updatedTask = {
             title: req.body.title,
             description: req.body.description,
             badge: req.body.badge
         };
-        console.log("HELLLLLLLLLLOOOOOOOOOOOOO", updatedTask);
         const result = await tasksCollection.updateOne({ _id: new ObjectId(req.params.id) }, { $set: updatedTask });
-        console.log('Update result:', result);
         res.redirect('/my-lists');
     } catch (error) {
         console.error('Error updating task:', error);
@@ -130,9 +126,7 @@ app.post('/tasks/:id/edit', async (req, res) => {
 // Delete a task
 app.post('/tasks/:id/delete', async (req, res) => {
     try {
-        console.log(`Deleting task with ID: ${req.params.id}`);
         const result = await tasksCollection.deleteOne({ _id: new ObjectId(req.params.id) });
-        console.log('Delete result:', result);
         res.redirect('/my-lists');
     } catch (error) {
         console.error('Error deleting task:', error);
@@ -146,7 +140,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-    res.render('index'); // Render 'index' for dashboard
+    res.render('index');
 });
 
 app.get('/new-list', (req, res) => {
@@ -166,6 +160,8 @@ app.get('/login', (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+module.exports = server;
