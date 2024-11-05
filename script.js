@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (loginForm) {
         loginForm.addEventListener('submit', (event) => {
-            event.preventDefault();
             // Add login logic here
             console.log('Login submitted');
         });
@@ -56,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (registerForm) {
         registerForm.addEventListener('submit', (event) => {
-            event.preventDefault();
             // Add registration logic here
             console.log('Registration submitted');
         });

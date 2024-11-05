@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const { MongoClient, ObjectId } = require('mongodb');
+const { console } = require('inspector');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -47,8 +48,16 @@ app.post('/register', async (req, res) => {
         const { username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = { username, password: hashedPassword };
-        await usersCollection.insertOne(newUser);
-        res.redirect('/login');
+
+        const newUserAccount = {
+            username: req.body.username,
+            password: hashedPassword,
+        };
+        await usersCollection.insertOne(newUserAccount);
+        res.redirect('/dashboard');
+
+        // await usersCollection.insertOne(newUser);
+        // res.redirect('/login');
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).send('Error registering user');
@@ -61,6 +70,7 @@ app.post('/login', async (req, res) => {
         const { username, password } = req.body;
         const user = await usersCollection.findOne({ username });
         if (user && await bcrypt.compare(password, user.password)) {
+            console.log("Sucess")
             res.redirect('/dashboard');
         } else {
             res.status(401).send('Invalid credentials');
@@ -74,11 +84,32 @@ app.post('/login', async (req, res) => {
 // Create a new task
 app.post('/tasks', async (req, res) => {
     try {
+        const { title, description, badge } = req.body;
+
+        // Validation checks
+        if (!title || typeof title !== 'string' || title.trim().length === 0) {
+            return res.status(400).send('Task title is required and cannot be empty.');
+        }
+
+        if (title.length > 2) {
+            return res.status(400).send('Task title cannot exceed 100 characters.');
+        }
+
+        if (!description || typeof description !== 'string' || description.trim().length === 0) {
+            return res.status(400).send('Task description is required and cannot be empty.');
+        }
+
+        if (description.length > 500) {
+            return res.status(400).send('Task description cannot exceed 500 characters.');
+        }
+
+        // If validation passes, create the new task
         const newTask = {
-            title: req.body.title,
-            description: req.body.description,
-            badge: req.body.badge
+            title: title.trim(),
+            description: description.trim(),
+            badge: badge // Assuming badge does not require validation
         };
+
         await tasksCollection.insertOne(newTask);
         res.redirect('/my-lists');
     } catch (error) {
