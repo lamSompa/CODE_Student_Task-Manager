@@ -91,7 +91,7 @@ app.post('/tasks', async (req, res) => {
             return res.status(400).send('Task title is required and cannot be empty.');
         }
 
-        if (title.length > 2) {
+        if (title.length > 100) {
             return res.status(400).send('Task title cannot exceed 100 characters.');
         }
 
