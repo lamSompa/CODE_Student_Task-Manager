@@ -4,19 +4,19 @@ const morgan = require("morgan");
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
-const User = require('./models/User');
-const Task = require('./models/Task');
 
 const app = express();
 app.use(morgan("dev"));
 const PORT = process.env.PORT || 3000;
 
-// Initialize database connections
-User.init();
-Task.init();
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));

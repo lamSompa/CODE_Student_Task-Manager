@@ -1,24 +1,17 @@
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-let usersCollection;
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true, trim: true },
+    password: { type: String, required: true }
+});
 
-async function init() {
-    const uri = process.env.MONGODB_URI;
-    const client = new MongoClient(uri);
-    await client.connect();
-    const database = client.db('CODEStudentTaskManager');
-    usersCollection = database.collection('Users');
-}
+// Hash password before saving
+userSchema.pre('save', async function(next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
 
-async function createUser(username, password) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = { username, password: hashedPassword };
-    await usersCollection.insertOne(newUser);
-}
-
-async function findUser(username) {
-    return await usersCollection.findOne({ username });
-}
-
-module.exports = { init, createUser, findUser };
+module.exports = mongoose.model('user', userSchema);

@@ -1,20 +1,22 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 async function register(req, res) {
     try {
         const { username, password } = req.body;
-        await User.createUser(username, password);
+        const newUser = new User({ username, password });
+        await newUser.save();
         res.redirect('/dashboard');
     } catch (error) {
         console.error('Error registering user:', error);
-        res.status(500).send('Error registering user');
+        res.status(400).send('Error registering user: ' + error.message);
     }
 }
 
 async function login(req, res) {
     try {
         const { username, password } = req.body;
-        const user = await User.findUser(username);
+        const user = await User.findOne({ username });
         if (user && await bcrypt.compare(password, user.password)) {
             res.redirect('/dashboard');
         } else {

@@ -237,6 +237,60 @@ body.dark-mode .task-link:hover {
     background-color: #4ccf4c;
 }
 
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup {
+    position: absolute;
+    background-color: #333; /* Black background */
+    color: #ff4c4c; /* Red text */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    max-width: 300px;
+}
+
+.popup.show {
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #333; 
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    color: white; 
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 /* Progress Section */
 .progress {
     margin: 20px 0;

@@ -1,29 +1,9 @@
-const { MongoClient, ObjectId } = require('mongodb');
+const mongoose = require('mongoose');
 
-let tasksCollection;
+const taskSchema = new mongoose.Schema({
+    title: { type: String, required: true, trim: true, minlength: 1, maxlength: 50 },
+    description: { type: String, trim: true, minlength: 1, maxlength: 250 },
+    badge: { type: String, enum: ['Urgent', 'Normal', 'Completed'], required: true }
+});
 
-async function init() {
-    const uri = process.env.MONGODB_URI;
-    const client = new MongoClient(uri);
-    await client.connect();
-    const database = client.db('CODEStudentTaskManager');
-    tasksCollection = database.collection('Tasks');
-}
-
-async function createTask(task) {
-    return await tasksCollection.insertOne(task);
-}
-
-async function getTasks() {
-    return await tasksCollection.find({}).toArray();
-}
-
-async function updateTask(id, updatedTask) {
-    return await tasksCollection.updateOne({ _id: new ObjectId(id) }, { $set: updatedTask });
-}
-
-async function deleteTask(id) {
-    return await tasksCollection.deleteOne({ _id: new ObjectId(id) });
-}
-
-module.exports = { init, createTask, getTasks, updateTask, deleteTask };
+module.exports = mongoose.model('task', taskSchema);

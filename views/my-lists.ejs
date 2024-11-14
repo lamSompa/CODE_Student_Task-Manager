@@ -2,10 +2,10 @@
     <h2>My Lists Overview</h2>
     <div class="actions">
         <!-- Form to Add New Task -->
-        <form action="/tasks" method="POST">
-            <input type="text" name="title" placeholder="Task Title" required>
-            <input type="text" name="description" placeholder="Task Description" required>
-            <select name="badge" required>
+        <form action="/tasks" method="POST" id="taskForm">
+            <input type="text" id="title" name="title" placeholder="Enter a task title" required pattern="[A-Za-z\s]+" maxlength="50">
+            <input type="text" id="description" name="description" placeholder="Enter a task description" required pattern="[A-Za-z\s]+" maxlength="250">
+            <select id="badge" name="badge" required>
                 <option value="Urgent">Urgent</option>
                 <option value="Completed">Completed</option>
                 <option value="Normal">Normal</option>
@@ -22,8 +22,8 @@
                 <div class="list-actions">
                     <!-- Edit Form -->
                     <form action="/tasks/<%= task._id %>/edit" method="POST" style="display: inline;">
-                        <input type="text" name="title" value="<%= task.title %>" required>
-                        <input type="text" name="description" value="<%= task.description %>" required>
+                        <input type="text" name="title" value="<%= task.title %>" required pattern="[A-Za-z\s]+" maxlength="50">
+                        <input type="text" name="description" value="<%= task.description %>" required pattern="[A-Za-z\s]+" maxlength="250">
                         <select name="badge" required>
                             <option value="Urgent" <%= task.badge === 'Urgent' ? 'selected' : '' %>>Urgent</option>
                             <option value="Completed" <%= task.badge === 'Completed' ? 'selected' : '' %>>Completed</option>
@@ -39,4 +39,12 @@
             </li>
         <% }) %>
     </ul>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
 </section>
