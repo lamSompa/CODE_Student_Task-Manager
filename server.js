@@ -33,11 +33,12 @@ app.use(taskRoutes);
 
 // Static routes
 app.get('/', (req, res) => res.render('index'));
-app.get('/dashboard', (req, res) => res.render('index'));
+app.get('/dashboard', (req, res) => res.render('dashboard'));
 app.get('/new-list', (req, res) => res.render('new-list'));
 app.get('/completed-tasks', (req, res) => res.render('completed-tasks'));
 app.get('/settings', (req, res) => res.render('settings'));
 app.get('/login', (req, res) => res.render('login'));
+app.get('/register', (req, res) => res.render('register'));
 
 // Start the server
 const server = app.listen(PORT, () => {

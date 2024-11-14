@@ -1,162 +1,18 @@
-        <section class="recent-activity">
-            <h3>Recent Activity</h3>
-            <ul>
-                <li>
-                    <span class="activity-icon">✔️</span>
-                    <div class="activity-content">
-                        <p>Task 2 marked as completed</p>
-                        <span class="timestamp">2 hours ago</span>
-                    </div>
-                </li>
-                <li>
-                    <span class="activity-icon">➕</span>
-                    <div class="activity-content">
-                        <p>New task added: Task 4</p>
-                        <span class="timestamp">5 hours ago</span>
-                    </div>
-                </li>
-                <li>
-                    <span class="activity-icon">🔄</span>
-                    <div class="activity-content">
-                        <p>Profile updated</p>
-                        <span class="timestamp">8 days ago</span>
-                    </div>
-                </li>
-                <li>
-                    <span class="activity-icon">✔️</span>
-                    <div class="activity-content">
-                        <p>Task 3 marked as completed</p>
-                        <span class="timestamp">2 days ago</span>
-                    </div>
-                </li>
-                <li>
-                    <span class="activity-icon">➕</span>
-                    <div class="activity-content">
-                        <p>New task added: Task 5</p>
-                        <span class="timestamp">3 days ago</span>
-                    </div>
-                </li>
-                <li>
-                    <span class="activity-icon">🔄</span>
-                    <div class="activity-content">
-                        <p>Settings updated</p>
-                        <span class="timestamp">4 days ago</span>
-                    </div>
-                </li>
-            </ul>
-        </section>
-        <!--This gives a general overview of the recent tasks and activity-->
-        <section class="overview-header">
-            <h2>Dashboard Overview</h2>
-            <div class="quick-actions">
-                <button>Add New Task</button>
-                <button>View Calendar</button>
-            </div>
-        </section>
-        <section class="summary">
-            <div class="summary-item">Total Tasks: <span id="total-tasks">3</span></div>
-            <div class="summary-item">Completed: <span id="completed-tasks">1</span></div>
-            <div class="summary-item">Urgent: <span id="urgent-tasks">1</span></div>
-        </section>
-        <ul class="task-list">
-            <li class="task-box">
-                <a href="task1.html" class="task-link">
-                    <input type="checkbox" class="task-checkbox"> Task 1
-                    <span class="badge urgent">Urgent</span>
-                </a>
-            </li>
-            <li class="task-box">
-                <a href="task2.html" class="task-link">
-                    <input type="checkbox" class="task-checkbox" checked> Task 2
-                    <span class="badge normal">Normal</span>
-                </a>
-            </li>
-            <li class="task-box">
-                <a href="task3.html" class="task-link">
-                    <input type="checkbox" class="task-checkbox"> Task 3
-                    <span class="badge completed">Completed</span>
-                </a>
-            </li>
-        </ul>
-        <section class="progress">
-            <h3>Progress Overview</h3>
-            <div class="progress-cards">
-                <div class="progress-card">
-                    <h4>Overall Progress</h4>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill" style="width: 33%;"></div>
-                    </div>
-                    <p>33% tasks completed</p>
-                </div>
-                <div class="progress-card">
-                    <h4>Remaining Tasks</h4>
-                    <p>2 out of 3 tasks remaining</p>
-                </div>
-            </div>
-        </section>
-        <section class="task-priority">
-            <h3>Task Prioritization</h3>
-            <p>Organize tasks by priority to focus on what's important.</p>
-            <div class="priority-list">
-                <div class="priority-item high">
-                    <h4>High Priority</h4>
-                    <ul>
-                        <li>Finish project report</li>
-                        <li>Prepare for presentation</li>
-                    </ul>
-                </div>
-                <div class="priority-item medium">
-                    <h4>Medium Priority</h4>
-                    <ul>
-                        <li>Update resume</li>
-                        <li>Plan team meeting</li>
-                    </ul>
-                </div>
-                <div class="priority-item low">
-                    <h4>Low Priority</h4>
-                    <ul>
-                        <li>Read new book</li>
-                        <li>Organize workspace</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        <section class="reminder">
-            <h3>Reminders</h3>
-            <ul>
-                <li>
-                    <div class="reminder-item">
-                        <strong>Hand-in 1:</strong> by Sep 17th 16:59
-                        <p>Hand-in my SE_19 project with the google form link.</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="reminder-item">
-                        <strong>Details:</strong>
-                        <ul>
-                            <li>Confirm if my GitHub repo contains at least 3 HTML pages linked to each other.</li>
-                            <li>Ask for feedback from Sam or Nicholas before handing in.</li>
-                            <li>Free up storage on my SSD after Hand-In.</li>
-                            <li>Make sure to confirm if all necessary commits and updates have been synced.</li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <div class="reminder-item">
-                        <strong>Responsiveness:</strong>
-                        <p>All pages should be responsive, using media queries and at least 2 breakpoints.</p>
-                    </div>
-                </li>
-            </ul>
-        </section>
-        <section class="external-tools">
-            <h3>External Tools</h3>
-            <ul class="tools">
-                <li><a href="https://calendar.google.com" target="_blank"><img src="assets/icons/External Tools/Google Calendar.png" alt="Google Calendar"></a></li>
-                <li><a href="https://www.notion.so" target="_blank"><img src="assets/icons/External Tools/Notion.png" alt="Notion"></a></li>
-                <li><a href="https://slack.com" target="_blank"><img src="assets/icons/External Tools/Slack.png" alt="Slack"></a></li>
-                <li><a href="https://miro.com" target="_blank"><img src="assets/icons/External Tools/Miro.png" alt="Miro"></a></li>
-                <li><a href="https://clickup.com" target="_blank"><img src="assets/icons/External Tools/Clickup.png" alt="ClickUp"></a></li>
-            </ul>
-        </section>
+<section class="auth-container">
+    <h1>Welcome</h1>
+    <p>Enter your provided login credentials.</p>
+    <form id="login-form" action="/login" method="POST">
+        <input type="email" name="email" placeholder="Email address" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register">Register here</a></p>
+</section>
 
+<div id="errorModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <p>Account not found. Click the link below to register.</p>
+        <a href="/register">Register</a>
+    </div>
+</div>
