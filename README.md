@@ -131,43 +131,43 @@ This architecture ensures a clear separation of concerns, making the application
 ```mermaid
 graph TD;
     subgraph User_Interface [User Interface]
-        Login_Page["""Login Page: User authentication entry point"""]
-        Dashboard["""Dashboard: Displays tasks, progress, and reminders"""]
-        Task_Management["""Task Management: Interfaces for creating, editing, and viewing tasks"""]
+        Login_Page["Login Page: User authentication entry point"]
+        Dashboard["Dashboard: Displays tasks, progress, and reminders"]
+        Task_Management["Task Management: Interfaces for creating, editing, and viewing tasks"]
     end
     
     subgraph Controller [Controller - Express.js]
         direction TB
-        Middleware["""Middleware"""]
-        body_parser["""body-parser: Parses incoming request bodies for JSON and URL-encoded data"""]
-        bcrypt["""bcrypt: Hashes passwords for secure user authentication"""]
-        Routes["""Routes"""]
-        register["""/register: Handles user registration"""]
-        login["""/login: Manages user login"""]
-        tasks["""/tasks: CRUD operations for tasks"""]
-        my_lists["""/my-lists: Retrieves all tasks for display"""]
-        edit_task["""/tasks/:id/edit: Updates a specific task"""]
-        delete_task["""/tasks/:id/delete: Deletes a specific task"""]
+        Middleware["Middleware"]
+        body_parser["body-parser: Parses incoming request bodies for JSON and URL-encoded data"]
+        bcrypt["bcrypt: Hashes passwords for secure user authentication"]
+        Routes["Routes"]
+        register["/register: Handles user registration"]
+        login["/login: Manages user login"]
+        tasks["/tasks: CRUD operations for tasks"]
+        my_lists["/my-lists: Retrieves all tasks for display"]
+        edit_task["/tasks/:id/edit: Updates a specific task"]
+        delete_task["/tasks/:id/delete: Deletes a specific task"]
     end
     
     subgraph Model [Model - MongoDB Atlas]
         direction TB
-        Collections["""Collections"""]
-        Users["""Users: Stores user credentials and profile information"""]
-        Tasks["""Tasks: Manages task details and statuses"""]
-        Data_Handling["""Data Handling"""]
-        CRUD_operations["""CRUD operations: Implements CRUD operations for tasks and user authentication"""]
+        Collections["Collections"]
+        Users["Users: Stores user credentials and profile information"]
+        Tasks["Tasks: Manages task details and statuses"]
+        Data_Handling["Data Handling"]
+        CRUD_operations["CRUD operations: Implements CRUD operations for tasks and user authentication"]
     end
     
     subgraph View [View - EJS Templates]
         direction TB
-        Templates["""Templates"""]
-        index_ejs["""index.ejs: Main landing page with recent activities"""]
-        my_lists_ejs["""my-lists.ejs: Displays task lists with CRUD operations"""]
-        login_ejs["""login.ejs: User login and registration forms"""]
-        header_ejs["""header.ejs: Navigation and dark mode toggle"""]
-        Client_Side_Scripts["""Client-Side Scripts"""]
-        script_js["""script.js: Handles form submissions and UI interactions like dark mode"""]
+        Templates["Templates"]
+        index_ejs["index.ejs: Main landing page with recent activities"]
+        my_lists_ejs["my-lists.ejs: Displays task lists with CRUD operations"]
+        login_ejs["login.ejs: User login and registration forms"]
+        header_ejs["header.ejs: Navigation and dark mode toggle"]
+        Client_Side_Scripts["Client-Side Scripts"]
+        script_js["script.js: Handles form submissions and UI interactions like dark mode"]
     end
 
     User_Interface --> Controller
