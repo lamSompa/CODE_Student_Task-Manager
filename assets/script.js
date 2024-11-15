@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle dropdown menu
     if (menuIcon) {
         menuIcon.addEventListener('click', () => {
-            if (dropdown) dropdown.classList.toggle('active');
+            if (dropdown) {
+                dropdown.classList.toggle('active');
+            }
         });
     }
 
@@ -63,13 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    titleInput.addEventListener('focus', () => {
-        showPopup(titleInput, 'Title should contain only letters and spaces. Type numbers in words if necessary.');
-    });
+    if (titleInput) {
+        titleInput.addEventListener('focus', () => {
+            showPopup(titleInput, 'Title should contain only letters and spaces. Type numbers in words if necessary.');
+        });
+    }
 
-    descriptionInput.addEventListener('focus', () => {
-        showPopup(descriptionInput, 'Description should contain only letters and spaces. Type numbers in words if necessary.');
-    });
+    if (descriptionInput) {
+        descriptionInput.addEventListener('focus', () => {
+            showPopup(descriptionInput, 'Description should contain only letters and spaces. Type numbers in words if necessary.');
+        });
+    }
 
     // Login Form Handling
     const loginForm = document.getElementById('login-form');
@@ -84,8 +90,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (registerForm) {
         registerForm.addEventListener('submit', (event) => {
-            // Add registration logic here
+            event.preventDefault();
+            const passwordInput = registerForm.querySelector('input[name="password"]');
+            const confirmPasswordInput = registerForm.querySelector('input[name="confirmPassword"]');
+            const emailInput = registerForm.querySelector('input[name="email"]');
+
+            // Password match validation
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            // Email format validation
+            const pattern = /^[a-zA-Z0-9._%+-]+@code\.berlin$/;
+            if (!pattern.test(emailInput.value)) {
+                alert('Invalid email format');
+                return;
+            }
+
+            // Submit the form if all validations pass
             console.log('Registration submitted');
+            registerForm.submit();
         });
+    }
+
+    // Modal Handling
+    function showModal() {
+        document.getElementById('authModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('authModal').style.display = 'none';
+    }
+
+    // Add event listeners to protected links
+    const protectedLinks = document.querySelectorAll('.protected-link');
+    protectedLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default navigation
+            showModal(); // Show the modal
+        });
+    });
+
+    // Add event listener to close button
+    const closeButton = document.querySelector('.close-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', closeModal);
     }
 });

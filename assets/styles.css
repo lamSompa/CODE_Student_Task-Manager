@@ -1,6 +1,19 @@
 /* Global Styles */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-/* Landing page style for Login container */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Auth Container */
 .auth-container {
     max-width: 400px;
     margin: 50px auto;
@@ -21,10 +34,6 @@ body.dark-mode .auth-container {
     font-size: 24px;
     margin-bottom: 20px;
     color: #4c8cff;
-}
-
-.auth-container p {
-    margin-bottom: 20px;
 }
 
 .auth-container form {
@@ -82,19 +91,6 @@ body.dark-mode .auth-container input[type="password"]:focus {
     border-color: #4c8cff;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
-    transition: background-color 0.3s, color 0.3s;
-}
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
-}
-
 /* Header Styles */
 header {
     background-color: #222;
@@ -110,6 +106,7 @@ header {
     align-items: center;
     margin-bottom: 5px;
 }
+
 .logo {
     max-width: 100px;
     height: auto;
@@ -119,15 +116,6 @@ header {
     .logo {
         max-width: 80px;
     }
-}
-
-.mode-toggle {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
 }
 
 .menu-icon {
@@ -183,10 +171,12 @@ header {
     width: 100%;
     transition: background-color 0.3s;
 }
+
 .dropdown li a img {
     max-width: 20px;
     margin-right: 10px;
 }
+
 .dropdown li a:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
@@ -199,6 +189,7 @@ main {
     margin: 10px;
     box-shadow: 0 0 10px #bbb;
 }
+
 body.dark-mode main {
     background-color: #1e1e1e;
     color: #e0e0e0;
@@ -216,6 +207,7 @@ section {
     padding-top: 20px;
     margin-top: 20px;
 }
+
 body.dark-mode section {
     border-top: 1px solid #444;
 }
@@ -246,6 +238,7 @@ body.dark-mode section {
     display: flex;
     gap: 10px;
 }
+
 .quick-actions button {
     background-color: #4c8cff;
     color: #fff;
@@ -255,6 +248,7 @@ body.dark-mode section {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 .quick-actions button:hover {
     background-color: #3a6cbd;
 }
@@ -271,12 +265,14 @@ body.dark-mode section {
     list-style-type: none;
     padding: 0;
 }
+
 .task-box {
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0 0 5px #999;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
+
 .task-link {
     display: block;
     padding: 15px;
@@ -285,6 +281,7 @@ body.dark-mode section {
     background-color: #f0f0f0;
     border-radius: 5px;
 }
+
 .task-link:hover {
     background-color: #e0e0e0;
     box-shadow: 0 0 8px #888;
@@ -335,8 +332,8 @@ body.dark-mode .task-link:hover {
 
 .popup {
     position: absolute;
-    background-color: #333; /* Black background */
-    color: #ff4c4c; /* Red text */
+    background-color: #333;
+    color: #ff4c4c;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
@@ -352,12 +349,12 @@ body.dark-mode .task-link:hover {
 }
 
 .modal-content {
-    background-color: #333; 
+    background-color: #333;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    color: white; 
+    color: white;
 }
 
 .close-button {
@@ -610,11 +607,6 @@ body.dark-mode .external-tools {
     background-color: #2a2a2a;
 }
 
-.external-tools img {
-    width: 100%;
-    height: auto;
-}
-
 .tools {
     display: flex;
     align-items: center;
@@ -624,10 +616,6 @@ body.dark-mode .external-tools {
 .external-tools ul {
     list-style-type: none;
     padding: 0;
-}
-
-.external-tools li {
-    margin-bottom: 10px;
 }
 
 .external-tools li a {
@@ -700,9 +688,6 @@ body.dark-mode .reminder-item:hover {
 
 body.dark-mode .summary {
     background-color: #2a2a3a;
-    padding-left: 0cap;
-    margin-top: 18px;
-    column-gap: 18px;
 }
 
 .summary-item {
@@ -799,7 +784,8 @@ body.dark-mode .form-section {
 }
 
 .form input[type="text"],
-.form input[type="password"] {
+.form input[type="password"],
+.form input[type="email"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -807,7 +793,8 @@ body.dark-mode .form-section {
 }
 
 .form input[type="text"]:focus,
-.form input[type="password"]:focus {
+.form input[type="password"]:focus,
+.form input[type="email"]:focus {
     border-color: #4c8cff;
     outline: none;
 }
@@ -827,13 +814,15 @@ body.dark-mode .form-section {
 }
 
 body.dark-mode .form input[type="text"],
-body.dark-mode .form input[type="password"] {
+body.dark-mode .form input[type="password"],
+body.dark-mode .form input[type="email"] {
     background-color: #2a2a2a;
     color: #e0e0e0;
     border: 1px solid #555;
 }
 
 body.dark-mode .form input[type="text"]:focus,
-body.dark-mode .form input[type="password"]:focus {
+body.dark-mode .form input[type="password"]:focus,
+body.dark-mode .form input[type="email"]:focus {
     border-color: #4c8cff;
 }

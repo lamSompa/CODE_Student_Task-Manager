@@ -1,20 +1,31 @@
 <header>
     <div class="logo-container">
-        <img src="/assets/images/CODE_Logos/PNG/Word_Main/Word_Main_White.png" alt="CODE University of Applied Sciences Logo" class="logo">
+        <img src="/images/CODE_Logos/PNG/Word_Main/Word_Main_White.png" alt="CODE University of Applied Sciences Logo" class="logo">
     </div>
     <h1>Student Manager</h1>
     <nav>
         <div class="menu-icon" id="menu-icon">&#9776;</div>
         <ul class="dropdown" id="dropdown">
-            <li><a href="/"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Home</a></li>
-            <li><a href="/dashboard"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Dashboard</a></li>
-            <li><a href="/my-lists"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> My Lists</a></li>
-            <li><a href="/new-list"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> New List</a></li>
-            <li><a href="/completed-tasks"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Completed Tasks</a></li>
-            <li><a href="/settings"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Settings</a></li>
-            <li><a href="/login"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Login</a></li>
-            <li><a href="/register"><img src="/assets/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Register</a></li>
+            <li><a href="/"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Home</a></li>
+            <li><a href="/dashboard" class="protected-link"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Dashboard</a></li>
+            <li><a href="/my-lists" class="protected-link"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> My Lists</a></li>
+            <li><a href="/new-list" class="protected-link"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> New List</a></li>
+            <li><a href="/completed-tasks" class="protected-link"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Completed Tasks</a></li>
+            <li><a href="/settings" class="protected-link"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Settings</a></li>
+            <li><a href="/login"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Login</a></li>
+            <li><a href="/register"><img src="/icons/CODE_Icon_Brackets/Icon_Brackets_White.png" alt="Icon"> Register</a></li>
         </ul>
     </nav>
     <input type="checkbox" id="mode-toggle">
+
+    <!-- Modal for login prompt -->
+    <div id="authModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <p>Unfortunately, you cannot access other pages without logging in with valid credentials.</p>
+            <p>If you have not signed up, use the link below to register and create an account before accessing the site.</p>
+            <a href="/register">Register</a>
+        </div>
+    </div>
 </header>
+
