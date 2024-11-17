@@ -42,7 +42,7 @@ body.dark-mode .auth-container {
     gap: 15px;
 }
 
-.auth-container input[type="email"],
+.auth-container input[type="text"],
 .auth-container input[type="password"] {
     padding: 10px;
     border: 1px solid #ccc;
@@ -50,7 +50,7 @@ body.dark-mode .auth-container {
     transition: border-color 0.3s;
 }
 
-.auth-container input[type="email"]:focus,
+.auth-container input[type="text"]:focus,
 .auth-container input[type="password"]:focus {
     border-color: #4c8cff;
     outline: none;
@@ -79,14 +79,14 @@ body.dark-mode .auth-container {
     text-decoration: underline;
 }
 
-body.dark-mode .auth-container input[type="email"],
+body.dark-mode .auth-container input[type="text"],
 body.dark-mode .auth-container input[type="password"] {
     background-color: #2a2a2a;
     color: #e0e0e0;
     border: 1px solid #555;
 }
 
-body.dark-mode .auth-container input[type="email"]:focus,
+body.dark-mode .auth-container input[type="text"]:focus,
 body.dark-mode .auth-container input[type="password"]:focus {
     border-color: #4c8cff;
 }
@@ -328,6 +328,40 @@ body.dark-mode .task-link:hover {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+.custom-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 300px;
+    width: 80%;
+}
+
+.custom-popup p {
+    margin: 10px 0;
+}
+
+.custom-popup a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.custom-popup button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
 }
 
 .popup {

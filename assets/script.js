@@ -77,40 +77,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Custom Popup Function
+    function showCustomPopup(message) {
+        const popup = document.createElement('div');
+        popup.className = 'custom-popup';
+        popup.innerHTML = `
+            <p>${message}</p>
+            <p>If you already have an account, <a href="/login">login here</a>.</p>
+            <p>If not, please register with different credentials.</p>
+        `;
+
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'OK';
+        closeButton.onclick = () => popup.remove();
+
+        popup.appendChild(closeButton);
+        document.body.appendChild(popup);
+    }
+
     // Login Form Handling
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
 
     if (loginForm) {
         loginForm.addEventListener('submit', (event) => {
-            // Add login logic here
-            console.log('Login submitted');
+            alert('Login successful!');
         });
     }
 
     if (registerForm) {
-        registerForm.addEventListener('submit', (event) => {
+        registerForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const passwordInput = registerForm.querySelector('input[name="password"]');
             const confirmPasswordInput = registerForm.querySelector('input[name="confirmPassword"]');
             const emailInput = registerForm.querySelector('input[name="email"]');
+            const csrfToken = registerForm.querySelector('input[name="_csrf"]').value;
 
             // Password match validation
             if (passwordInput.value !== confirmPasswordInput.value) {
-                alert('Passwords do not match');
+                showCustomPopup('Passwords do not match');
                 return;
             }
 
             // Email format validation
             const pattern = /^[a-zA-Z0-9._%+-]+@code\.berlin$/;
             if (!pattern.test(emailInput.value)) {
-                alert('Invalid email format');
+                showCustomPopup('Invalid email format');
                 return;
             }
 
             // Submit the form if all validations pass
-            console.log('Registration submitted');
-            registerForm.submit();
+            try {
+                const formData = new FormData(registerForm);
+                formData.append('_csrf', csrfToken); // Ensure CSRF token is included
+
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    showCustomPopup(errorData.message); // Use custom popup
+                } else {
+                    window.location.href = '/dashboard';
+                }
+            } catch (error) {
+                console.error('Error during registration:', error);
+            }
         });
     }
 
@@ -127,8 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const protectedLinks = document.querySelectorAll('.protected-link');
     protectedLinks.forEach(link => {
         link.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent default navigation
-            showModal(); // Show the modal
+            if (!isAuthenticated) { // Check if user is authenticated
+                event.preventDefault(); // Prevent default navigation
+                showModal(); // Show the modal
+            }
         });
     });
 

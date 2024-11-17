@@ -46,8 +46,6 @@ Centralizing tools means less time switching between apps and more focus on lear
    - Update the MongoDB URL in `server.js` with your credentials.
 
 #### Environment Variables and Configuration
-Before starting the server, ensure that you have set up the necessary environment variables and configuration files. This is crucial for connecting to MongoDB and other services your application might use.
-
 - **MongoDB Connection String:**
   - Create a .env file in the root directory of your project.
   - Add your MongoDB connection string to the .env file:
@@ -55,23 +53,6 @@ Before starting the server, ensure that you have set up the necessary environmen
     MONGODB_URI=your_mongodb_connection_string
     ```
   - Replace `your_mongodb_connection_string` with the actual connection string provided by MongoDB Atlas or your MongoDB service.
-
-- **Other Environment Variables:**
-  - If your application uses other services (e.g., email services, third-party APIs), ensure you add their respective environment variables in the .env file.
-  - Example:
-    ```
-    API_KEY=your_api_key
-    SECRET_KEY=your_secret_key
-    ```
-
-- **Configuration Files:**
-  - Ensure any configuration files required by your application are correctly set up and point to the right resources or endpoints.
-
-- **Loading Environment Variables:**
-  - Ensure your application is set up to load these environment variables. If you are using Node.js, you can use the dotenv package to load variables from the .env file:
-    ```
-    require('dotenv').config();
-    ```
 
 4. **Start the Server**
    ```bash
@@ -131,49 +112,74 @@ This architecture ensures a clear separation of concerns, making the application
 ```mermaid
 graph TD;
     subgraph User_Interface [User Interface]
-        Login_Page["Login Page: User authentication entry point"]
-        Dashboard["Dashboard: Displays tasks, progress, and reminders"]
-        Task_Management["Task Management: Interfaces for creating, editing, and viewing tasks"]
+        Login_Page["""Login Page: User authentication entry point"""]
+        Dashboard["""Dashboard: Displays tasks, progress, and reminders"""]
+        Task_Management["""Task Management: Interfaces for creating, editing, and viewing tasks"""]
     end
     
     subgraph Controller [Controller - Express.js]
         direction TB
-        Middleware["Middleware"]
-        body_parser["body-parser: Parses incoming request bodies for JSON and URL-encoded data"]
-        bcrypt["bcrypt: Hashes passwords for secure user authentication"]
-        Routes["Routes"]
-        register["/register: Handles user registration"]
-        login["/login: Manages user login"]
-        tasks["/tasks: CRUD operations for tasks"]
-        my_lists["/my-lists: Retrieves all tasks for display"]
-        edit_task["/tasks/:id/edit: Updates a specific task"]
-        delete_task["/tasks/:id/delete: Deletes a specific task"]
+        Middleware["""Middleware"""]
+        body_parser["""body-parser: Parses incoming request bodies for JSON and URL-encoded data"""]
+        bcrypt["""bcrypt: Hashes passwords for secure user authentication"""]
+        Routes["""Routes"""]
+        register["""/register: Handles user registration"""]
+        login["""/login: Manages user login"""]
+        tasks["""/tasks: CRUD operations for tasks"""]
+        my_lists["""/my-lists: Retrieves all tasks for display"""]
+        edit_task["""/tasks/:id/edit: Updates a specific task"""]
+        delete_task["""/tasks/:id/delete: Deletes a specific task"""]
     end
     
     subgraph Model [Model - MongoDB Atlas]
         direction TB
-        Collections["Collections"]
-        Users["Users: Stores user credentials and profile information"]
-        Tasks["Tasks: Manages task details and statuses"]
-        Data_Handling["Data Handling"]
-        CRUD_operations["CRUD operations: Implements CRUD operations for tasks and user authentication"]
+        Collections["""Collections"""]
+        Users["""Users: Stores user credentials and profile information"""]
+        Tasks["""Tasks: Manages task details and statuses"""]
+        Data_Handling["""Data Handling"""]
+        CRUD_operations["""CRUD operations: Implements CRUD operations for tasks and user authentication"""]
     end
     
     subgraph View [View - EJS Templates]
         direction TB
-        Templates["Templates"]
-        index_ejs["index.ejs: Main landing page with recent activities"]
-        my_lists_ejs["my-lists.ejs: Displays task lists with CRUD operations"]
-        login_ejs["login.ejs: User login and registration forms"]
-        header_ejs["header.ejs: Navigation and dark mode toggle"]
-        Client_Side_Scripts["Client-Side Scripts"]
-        script_js["script.js: Handles form submissions and UI interactions like dark mode"]
+        Templates["""Templates"""]
+        index_ejs["""index.ejs: Main landing page with recent activities"""]
+        my_lists_ejs["""my-lists.ejs: Displays task lists with CRUD operations"""]
+        login_ejs["""login.ejs: User login and registration forms"""]
+        header_ejs["""header.ejs: Navigation and dark mode toggle"""]
+        Client_Side_Scripts["""Client-Side Scripts"""]
+        script_js["""script.js: Handles form submissions and UI interactions like dark mode"""]
     end
 
     User_Interface --> Controller
     Controller --> Model
     Model --> Controller
     Controller --> View
+```
+
+## Data Flow Diagram
+```mermaid
+graph TD;
+    User -->|HTTPS| WebApp[Web Application]
+    WebApp -->|Serve Pages| User
+    User -->|Login/Register| Auth[Authentication Service]
+    Auth -->|Validate Credentials| DB[(Database)]
+    Auth -->|Hash Passwords| Bcrypt[bcrypt]
+    Auth -->|Session Management| Session[Session Store]
+    User -->|Submit Task| TaskService[Task Management Service]
+    TaskService -->|Validate Input| Validator[Input Validator]
+    Validator -->|Sanitize Data| TaskService
+    TaskService -->|Create Task| DB
+    TaskService -->|Read Tasks| DB
+    TaskService -->|Update Task| DB
+    TaskService -->|Delete Task| DB
+    User -->|View Tasks| TaskService
+    WebApp -->|API Calls| TaskService
+    WebApp -->|API Calls| Auth
+    TaskService -->|Log Actions| Logger[Logging Service]
+    WebApp -->|Error Handling| Error[Error Management]
+    Error -->|Log Errors| Logger
+    WebApp -->|Rate Limiting| RateLimiter[Rate Limiter]
 ```
 
 ## API Documentation

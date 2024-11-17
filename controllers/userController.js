@@ -1,31 +1,35 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
-async function register(req, res) {
+// Register user
+exports.register = async (req, res) => {
+    console.log('Received CSRF Token:', req.body._csrf); // Log the received token
+    const { username, email, password } = req.body;
     try {
-        const { username, password } = req.body;
-        const newUser = new User({ username, password });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser  = new User({ username, email, password: hashedPassword });
         await newUser.save();
-        res.redirect('/dashboard');
-    } catch (error) {
-        console.error('Error registering user:', error);
-        res.status(400).send('Error registering user: ' + error.message);
-    }
-}
-
-async function login(req, res) {
-    try {
-        const { username, password } = req.body;
-        const user = await User.findOne({ username });
-        if (user && await bcrypt.compare(password, user.password)) {
+        // Automatically log in the user after registration
+        req.logIn(newUser, (err) => {
+            if (err) {
+                console.error('Error logging in after registration:', err);
+                return res.render('register', { messages: { error: 'Registration succeeded, but login failed. Please try logging in.' } });
+            }
             res.redirect('/dashboard');
-        } else {
-            res.status(401).send('Invalid credentials');
-        }
+        });
     } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).send('Error logging in');
+        console.error('Error during registration:', error);
+        res.render('register', { messages: { error: 'Registration failed. Please try again.' } });
     }
-}
+};
 
-module.exports = { register, login };
+// Login user
+exports.login = (req, res) => {
+    res.redirect('/dashboard');
+};
+
+// Handle CSRF token validation
+exports.handleCsrf = (req, res, next) => {
+    console.log('Received CSRF Token:', req.body._csrf); // Log the received token
+    next();
+};

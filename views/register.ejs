@@ -1,5 +1,5 @@
 <section class="form-section">
-    <h2>Register</h2>
+    <h2>Create a New Account</h2>
     <form id="register-form" class="form" action="/register" method="POST">
         <input type="text" name="username" placeholder="Username" required>
         <input type="text" name="firstName" placeholder="First Name" required>
@@ -7,8 +7,9 @@
         <input type="email" name="email" placeholder="University Email (your.name@code.berlin)" required pattern="^[a-zA-Z0-9._%+-]+@code\.berlin$">
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button type="submit">Register</button>
     </form>
 </section>
 
-<script src="/scripts/register.js"></script>
+<script src="C:\Users\abeik\Downloads\CODE_Student_Task-Manager-main\CODE_Student_Task-Manager-main\assets\script.js"></script>

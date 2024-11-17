@@ -10,7 +10,12 @@ async function createTask(req, res) {
             return res.status(400).send('Title and description must contain only letters and spaces.');
         }
 
-        const newTask = new Task({ title, description, badge });
+        const newTask = new Task({ 
+            title, 
+            description, 
+            badge,
+            userId: req.user._id // Associate task with the logged-in user
+        });
         await newTask.save();
         res.redirect('/my-lists');
     } catch (error) {
@@ -21,7 +26,7 @@ async function createTask(req, res) {
 
 async function getTasks(req, res) {
     try {
-        const tasks = await Task.find({});
+        const tasks = await Task.find({ userId: req.user._id }); // Fetch tasks for the logged-in user
         res.render('my-lists', { tasks });
     } catch (error) {
         console.error('Error retrieving tasks:', error);
