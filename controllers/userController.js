@@ -1,13 +1,19 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 // Register user
 exports.register = async (req, res) => {
     console.log('Received CSRF Token:', req.body._csrf); // Log the received token
     const { username, email, password } = req.body;
     try {
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res.render('register', { messages: { error: 'Username already exists.' } });
+        }
+        
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser  = new User({ username, email, password: hashedPassword });
+        const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
         // Automatically log in the user after registration
         req.logIn(newUser, (err) => {
@@ -24,8 +30,24 @@ exports.register = async (req, res) => {
 };
 
 // Login user
-exports.login = (req, res) => {
-    res.redirect('/dashboard');
+exports.login = (req, res, next) => {
+    passport.authenticate('local', async (err, user, info) => {
+        console.log('Authentication attempt:', { err, user, info }); // Add logging
+        if (err) {
+            console.error('Error during login:', err);
+            return next(err);
+        }
+        if (!user) {
+            return res.render('login', { messages: { error: info.message } });
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                console.error('Error logging in:', err);
+                return res.render('login', { messages: { error: 'Login failed. Please try again.' } });
+            }
+            res.redirect('/dashboard');
+        });
+    })(req, res, next);
 };
 
 // Handle CSRF token validation

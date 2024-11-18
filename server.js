@@ -45,6 +45,11 @@ app.use(session({
     cookie: { secure: false } // Set to true if using HTTPS
 }));
 
+app.use((req, res, next) => {
+    console.log('Session:', req.session); // Log session
+    next();
+});
+
 // CSRF protection
 const csrfProtection = csrf();
 app.use(csrfProtection);
@@ -57,38 +62,33 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(
-    { usernameField: 'identifier' },
-    async function(identifier, password, done) {
+    async (username, password, done) => {
         try {
-            const isEmail = identifier.includes('@');
-            const user = isEmail 
-                ? await User.findOne({ email: identifier })
-                : await User.findOne({ username: identifier });
-
+            const user = await User.findOne({ username });
             if (!user) {
-                return done(null, false, { message: 'Incorrect credentials.' });
+                return done(null, false, { message: 'Incorrect username.' });
             }
-
             const isMatch = await bcrypt.compare(password, user.password);
-
             if (!isMatch) {
-                return done(null, false, { message: 'Incorrect credentials.' });
+                return done(null, false, { message: 'Incorrect password.' });
             }
-
             return done(null, user);
-        } catch (error) {
-            return done(error);
+        } catch (err) {
+            return done(err);
         }
     }
 ));
 
-passport.serializeUser ((user, done) => done(null, user.id));
-passport.deserializeUser (async (id, done) => {
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
     try {
         const user = await User.findById(id);
         done(null, user);
-    } catch (error) {
-        done(error, null);
+    } catch (err) {
+        done(err);
     }
 });
 

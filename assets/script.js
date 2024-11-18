@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (registerForm) {
         registerForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+            // event.preventDefault();
             const passwordInput = registerForm.querySelector('input[name="password"]');
             const confirmPasswordInput = registerForm.querySelector('input[name="confirmPassword"]');
             const emailInput = registerForm.querySelector('input[name="email"]');
